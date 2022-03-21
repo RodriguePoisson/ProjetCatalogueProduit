@@ -11,9 +11,11 @@ public class Catalogue implements I_Catalogue
 {
 	private List <I_Produit> list_produits;
 	private final DecimalFormat df = new DecimalFormat("0.00");
+	private String name;
 	
-	public Catalogue()
+	public Catalogue(String name)
 	{
+		this.name = name;
 		list_produits = new ArrayList<I_Produit>() ;
 	}
 	@Override
@@ -215,7 +217,7 @@ public class Catalogue implements I_Catalogue
 	@Override
 	public String toString()
 	{
-		String catalogueString = "";
+		String catalogueString = "Catalogue : "+this.name + "\n"+"\n";
 		for (I_Produit i_Produit : list_produits) 
 		{
 			catalogueString+= i_Produit.toString() + "\n";
@@ -231,6 +233,12 @@ public class Catalogue implements I_Catalogue
 			if(produit.getNom().equals(name)) return produit;
 		}
 		return null;
+	}
+	@Override
+	public String getName() 
+	{
+		
+		return this.name;
 	}
 	
 	

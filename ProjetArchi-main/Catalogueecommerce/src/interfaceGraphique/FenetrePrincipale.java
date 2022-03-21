@@ -22,22 +22,24 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	private JButton btAchat;
 	private JButton btVente;
 	private JButton btQuitter;
+	private JButton btRetour;
 	private CentralController centralController;
 
 	
-	public FenetrePrincipale() {
-		
-		centralController = new CentralController();
-		setTitle("exercice Produits");
+	public FenetrePrincipale(String catalogue_name)
+	{
+		centralController = new CentralController(catalogue_name);
+		setTitle("Catalogue : "+catalogue_name);
 		setBounds(500, 500, 320, 250);
 		JPanel panAffichage = new JPanel();
 		JPanel panNouveauSupprimerProduit = new JPanel();
 //		JPanel panNouveauSupprimerCategorie = new JPanel();
 		JPanel panAchatVente = new JPanel();
 		JPanel panQuitter = new JPanel();
+		JPanel panRetour = new JPanel();
 		Container contentPane = getContentPane();
 		contentPane.setLayout(new FlowLayout());
-		btAfficher = new JButton("Quantitï¿½s en stock");
+		btAfficher = new JButton("Quantité en stock");
 		btNouveauProduit = new JButton("Nouveau Produit");
 		btSupprimerProduit = new JButton("Supprimer Produit");
 //		btNouvelleCategorie = new JButton("Nouvelle Categorie");
@@ -45,6 +47,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		btAchat = new JButton("Achat Produits");
 		btVente = new JButton("Vente Produits");
 		btQuitter = new JButton("Quitter");
+		btRetour = new JButton("Retour au choix de catalogues");
 		panAffichage.add(btAfficher);
 		panNouveauSupprimerProduit.add(btNouveauProduit); 
 		panNouveauSupprimerProduit.add(btSupprimerProduit);
@@ -53,12 +56,16 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		panAchatVente.add(btAchat); 
 		panAchatVente.add(btVente);  
 		panQuitter.add(btQuitter);
+		panRetour.add(btRetour);
 
 		contentPane.add(panAffichage);
 //		contentPane.add(panNouveauSupprimerCategorie);
 		contentPane.add(panNouveauSupprimerProduit);
 		contentPane.add(panAchatVente);
+		contentPane.add(panRetour);
 		contentPane.add(panQuitter);
+	
+	
 
 		btAfficher.addActionListener(this);
 		btNouveauProduit.addActionListener(this);
@@ -68,6 +75,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		btAchat.addActionListener(this);
 		btVente.addActionListener(this);
 		btQuitter.addActionListener(this);
+		btRetour.addActionListener(this);
 		
 		addWindowListener(this);
 		setVisible(true);
@@ -100,7 +108,12 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 		if (e.getSource() == btQuitter){
 			System.out.println("Au revoir");
 			System.exit(0);
-		}	
+		}
+		if(e.getSource() == btRetour)
+		{
+			new FenetreAccueil();
+			dispose();
+		}
 	}
 
 	public void windowClosing(WindowEvent arg0) {
@@ -114,11 +127,5 @@ public class FenetrePrincipale extends JFrame implements ActionListener,
 	public void windowDeiconified(WindowEvent arg0) {}
 	public void windowIconified(WindowEvent arg0) {}
 	public void windowOpened(WindowEvent arg0) {}
-
-	
-	
-	public static void main(String[] args) {
-		new FenetrePrincipale();
-	}
 
 }

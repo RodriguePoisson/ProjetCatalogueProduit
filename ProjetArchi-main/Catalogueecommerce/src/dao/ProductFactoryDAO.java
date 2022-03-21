@@ -1,8 +1,8 @@
 package dao;
 
-public class FactoryDAO
+public class ProductFactoryDAO
 {
-	public FactoryDAO()
+	public ProductFactoryDAO()
 	{
 		
 	}

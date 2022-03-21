@@ -15,6 +15,7 @@ public interface I_Catalogue {
 	public abstract String toString();
 	public abstract List<I_Produit> getListProduit();
 	public abstract I_Produit getProduitByName(String name);
+	public abstract String getName();
 
 	public abstract void clear();
 

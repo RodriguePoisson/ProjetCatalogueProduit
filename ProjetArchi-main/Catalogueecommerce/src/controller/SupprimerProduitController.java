@@ -1,7 +1,7 @@
 package controller;
 
 import dao.I_ProduitDAO;
-import dao.ProduitDAO;
+import dao.ProduitOracleDAO;
 import entite.I_Catalogue;
 
 public class SupprimerProduitController 

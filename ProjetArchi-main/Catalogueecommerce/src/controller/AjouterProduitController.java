@@ -1,8 +1,8 @@
 package controller;
 
-import dao.FactoryDAO;
+import dao.ProductFactoryDAO;
 import dao.I_ProduitDAO;
-import dao.ProduitDAO;
+import dao.ProduitOracleDAO;
 import entite.I_Catalogue;
 import entite.I_Produit;
 import entite.Produit;

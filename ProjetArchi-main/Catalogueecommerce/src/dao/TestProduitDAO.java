@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import entite.I_Produit;
 import entite.Produit;
+import oracleBD.Oracle;
 
 class TestProduitDAO 
 {
@@ -14,7 +15,7 @@ class TestProduitDAO
 	@Test
 	void testGetNomProduitExiste() 
 	{
-		I_ProduitDAO produitDAO= new ProduitDAO();
+		I_ProduitDAO produitDAO= new ProduitOracleDAO(Oracle.getCn());
 		I_Produit produit1 = new Produit("blaz",4,4);
 		
 		I_Produit produit2 = produitDAO.getProduit("blaz");
@@ -24,7 +25,7 @@ class TestProduitDAO
 	@Test
 	void testGetNomProduitExistePas() 
 	{
-		I_ProduitDAO produitDAO= new ProduitDAO();
+		I_ProduitDAO produitDAO= new ProduitOracleDAO(Oracle.getCn());
 		I_Produit produit1 = new Produit("Marse",10,5);
 		
 		I_Produit produit2 = produitDAO.getProduit("Marse");
@@ -47,7 +48,7 @@ class TestProduitDAO
 	@Test
 	void ModifyProductBlaaAndGetIt()
 	{
-		I_ProduitDAO produitDAO= new ProduitDAO();
+		I_ProduitDAO produitDAO= new ProduitOracleDAO(Oracle.getCn());
 		I_Produit produit1 = new Produit("blaa",5.65,90);
 		
 		produitDAO.modifyProduit("blaa",produit1);
