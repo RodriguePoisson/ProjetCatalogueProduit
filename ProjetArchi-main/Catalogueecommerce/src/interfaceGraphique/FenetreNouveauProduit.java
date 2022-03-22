@@ -11,13 +11,13 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	private JTextField txtNom;
 	private JTextField txtError;
 	private JTextField txtQte;
-//	private JComboBox<String> combo;
+	private JComboBox<String> combo;
 	private JButton btValider;
 	private CentralController centralController;
 
 
 //	public FenetreNouveauProduit(String[] lesCategories) {
-	public FenetreNouveauProduit(CentralController centralController) {	
+	public FenetreNouveauProduit(CentralController centralController,String[]lesCategories) {	
 		
 		this.centralController = centralController;
 		setTitle("Creation Produit");
@@ -28,7 +28,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		JLabel labNom = new JLabel("Nom produit");
 		JLabel labPrixHT = new JLabel("Prix Hors Taxe");
 		JLabel labQte = new JLabel("Quantité en stock");
-//		JLabel labCategorie = new JLabel("Categorie");
+		JLabel labCategorie = new JLabel("Categorie");
 		contentPane.add(labNom);
 		txtNom = new JTextField(15);
 		contentPane.add(txtNom);
@@ -39,10 +39,10 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 		txtQte = new JTextField(15);
 		contentPane.add(txtQte);
 
-//		combo = new JComboBox<String>(lesCategories);
-//		combo.setPreferredSize(new Dimension(100, 20));
-//		contentPane.add(labCategorie);
-//		contentPane.add(combo);
+		combo = new JComboBox<String>(lesCategories);
+		combo.setPreferredSize(new Dimension(100, 20));
+		contentPane.add(labCategorie);
+		contentPane.add(combo);
 
 		
 		btValider = new JButton("Valider");
@@ -57,7 +57,7 @@ public class FenetreNouveauProduit extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		try
 		{
-			centralController.ajouterProduit(this.txtNom.getText(), Float.parseFloat(this.txtPrixHT.getText()),Integer.parseInt(this.txtQte.getText()));
+			centralController.ajouterProduit(this.txtNom.getText(), Float.parseFloat(this.txtPrixHT.getText()),Integer.parseInt(this.txtQte.getText()), this.combo.getSelectedItem().toString());
 			
 			this.dispose();
 		}

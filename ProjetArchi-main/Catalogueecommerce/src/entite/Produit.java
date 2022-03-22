@@ -7,13 +7,14 @@ public class Produit implements I_Produit
 	private String nom;
 	private double prixHt;
 	private int quantite;
-	private final double TAUX_TVA = 0.2;
+	private double taxe;
 	private final DecimalFormat df = new DecimalFormat("#.00");
-	public Produit(String nom,double prixHt,int quantite)
+	public Produit(String nom,double prixHt,int quantite,double taxe)
 	{
 		this.nom = nom;
 		this.prixHt = prixHt;
 		this.quantite = quantite;
+		this.taxe = taxe;
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class Produit implements I_Produit
 	public double getPrixUnitaireTTC() 
 	{
 		
-		return this.getPrixUnitaireHT() *(1+TAUX_TVA);
+		return this.getPrixUnitaireHT() *(1+(this.taxe/100));
 	}
 
 	@Override

@@ -22,5 +22,10 @@ public class OracleFactoryDAO implements I_FactoryDAO
 		
 		return new CatalogueOracleDAO(this.cn);
 	}
+	@Override
+	public I_CategorieDAO createCategorieDAO()
+	{
+		return new CategorieOracleDAO(this.cn);
+	}
 
 }

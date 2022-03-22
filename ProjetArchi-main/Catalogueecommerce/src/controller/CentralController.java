@@ -4,14 +4,17 @@ package controller;
 
 import java.util.List;
 
+import Exception.NotVideException;
 import Exception.QuantiteException;
 
 import dao.I_CatalogueDAO;
+import dao.I_CategorieDAO;
 import dao.I_FactoryDAO;
 import dao.I_ProduitDAO;
 import dao.OracleFactoryDAO;
 import entite.Catalogue;
 import entite.I_Catalogue;
+import entite.I_Categorie;
 import oracleBD.Oracle;
 
 public class CentralController 
@@ -24,8 +27,11 @@ public class CentralController
 	private AfficherCatalogueController afficher_catalogue_controller;
 	private SupprimerCatalogueController supprimer_catalogue_controller;
 	private AjouterCatalogueController ajouter_catalogue_controller;
+	private AjouterCategorieController ajouter_categorie_controller;
+	private SupprimerCategorieController supprimer_categorie_controller;
 	private I_CatalogueDAO catalogue_dao;
 	private I_ProduitDAO produit_dao;
+	private I_CategorieDAO categorie_dao;
 	private I_FactoryDAO factoryDAO;
 	public CentralController()
 	{
@@ -38,9 +44,9 @@ public class CentralController
 		this();
 		this.catalogue = new Catalogue(catalogue_name);
 		this.produit_dao = this.factoryDAO.createProductDAO(this.catalogue.getName());
-		
+		this.categorie_dao = this.factoryDAO.createCategorieDAO();
 		this.catalogue.addProduits(produit_dao.getAllProduits());
-		this.ajouter_produit_controller = new AjouterProduitController(this.produit_dao);
+		this.ajouter_produit_controller = new AjouterProduitController(this.produit_dao, this.categorie_dao);
 		this.supprimer_produit_controller = new SupprimerProduitController(this.produit_dao);
 		this.acheter_produit_controller = new AcheterProduitController(this.produit_dao);
 		this.vendre_produit_controller = new VendreProduitController(this.produit_dao);
@@ -49,9 +55,9 @@ public class CentralController
 		this.supprimer_catalogue_controller = new SupprimerCatalogueController(this.catalogue_dao);
 	}
 	
-	public boolean ajouterProduit(String nom_produit,float prix_ht_produit,int quantite_en_stock)
+	public boolean ajouterProduit(String nom_produit,float prix_ht_produit,int quantite_en_stock,String nom_categorie)
 	{
-		return this.ajouter_produit_controller.ajouterProduit(nom_produit, prix_ht_produit, quantite_en_stock,this.catalogue);
+		return this.ajouter_produit_controller.ajouterProduit(nom_produit, prix_ht_produit, quantite_en_stock,this.catalogue,nom_categorie);
 	}
 	
 	public void supprimerProduit(String nomProduit)
@@ -102,5 +108,31 @@ public class CentralController
 		}
 		return nom_catalogues;
 		
+	}
+	
+	public void ajouter_categorie(String categorie_name,int taxe_categorie)
+	{
+		this.ajouter_categorie_controller = new AjouterCategorieController(this.categorie_dao);
+		this.ajouter_categorie_controller.ajouterCategorie(categorie_name,taxe_categorie);
+	}
+	public void supprimerCategorie(String nom_categorie ) throws NotVideException 
+	{
+		this.supprimer_categorie_controller = new SupprimerCategorieController(this.categorie_dao);
+		this.supprimer_categorie_controller.supprimer_categorie(nom_categorie);
+	}
+	public String[] getNomCategories() 
+	{
+		List<I_Categorie> categories = this.categorie_dao.getAllCategories();
+		int compteur_categorie = 0;
+		
+		String[] nom_categories = new String[categories.size()];
+		
+		for(I_Categorie categorie:categories)
+		{
+			nom_categories[compteur_categorie] = categorie.getName();
+			compteur_categorie++;
+		}
+		
+		return nom_categories;
 	}
 }

@@ -25,7 +25,7 @@ public class ProduitOracleDAO implements I_ProduitDAO
 	}
 
 	@Override
-	public void createProduit(I_Produit produit)
+	public void createProduit(I_Produit produit,String nom_categorie)
 	{
 		try 
 		{
@@ -34,8 +34,14 @@ public class ProduitOracleDAO implements I_ProduitDAO
 			cs.setDouble(2, produit.getPrixUnitaireHT());
 			cs.setInt(3, produit.getQuantite());
 			cs.setString(4, this.catalogue_name);
-			
 			cs.executeQuery();
+			System.out.println(produit.getNom()+"  "+nom_categorie);
+			CallableStatement cs2 = cn.prepareCall("CALL(add_produit_in_categorie(?,?,?))");
+			cs2.setString(1, produit.getNom());
+			cs2.setString(2, nom_categorie);
+			cs2.setString(3, this.catalogue_name);
+			
+			cs2.executeQuery();
 			
 		} catch (SQLException e)
 		{
@@ -95,7 +101,7 @@ public class ProduitOracleDAO implements I_ProduitDAO
 	@Override
 	public I_Produit getProduit(String nomProduit)
 	{
-		String sql = "SELECT nomProduit,quantiteProduit,prixUnitaireHTProduit FROM Produits WHERE nomProduit = ?";
+		String sql = "SELECT nomProduit,quantiteProduit,prixUnitaireHTProduit,codeProduit FROM Produits WHERE nomProduit = ?";
 		
 		I_Produit produit=null;
 		try 
@@ -109,9 +115,20 @@ public class ProduitOracleDAO implements I_ProduitDAO
 			String nom = rs.getString(1);
 			double prixHT = rs.getDouble(3);
 			int quantite = rs.getInt(2);
+			int codeProduit = rs.getInt(4);
+			
+			String sql2 = "SELECT taxe_categorie FROM produit_categorie WHERE id_produit = ?";
+			PreparedStatement prepared2 =cn.prepareStatement(sql);
+			prepared2.setInt(1, codeProduit);
+			ResultSet rs2 = prepared.executeQuery();
+			int taxe_categorie=0;
+			while(rs2.next())
+			{
+				rs2.getInt(1);
+			}
 			
 		
-			produit = new Produit(nom,prixHT,quantite);
+			produit = new Produit(nom,prixHT,quantite,taxe_categorie);
 			
 		} catch (SQLException e) 
 		{
@@ -127,7 +144,7 @@ public class ProduitOracleDAO implements I_ProduitDAO
 		System.out.println(this.catalogue_name);
 		List <I_Produit> list_produit = new ArrayList<I_Produit>();
 		try {
-			String sql = "SELECT nomProduit,prixUnitaireHTProduit,quantiteProduit \n"
+			String sql = "SELECT nomProduit,prixUnitaireHTProduit,quantiteProduit,codeProduit \n"
 					+ "FROM Produits produit\n"
 					+ "JOIN produit_catalogue produit_in_cata ON produit_in_cata .id_produit = produit.codeProduit \n"
 					+ "JOIN Catalogues catalogue ON catalogue.catalogue_id = produit_in_cata .id_catalogue\n"
@@ -142,13 +159,25 @@ public class ProduitOracleDAO implements I_ProduitDAO
 				System.out.println(nomProduit);
 				double prixHT = rs.getDouble(2);
 				int quantite = rs.getInt(3);
+				int codeProduit = rs.getInt(4);
 				
-				list_produit.add(new Produit(nomProduit,prixHT,quantite));
+				System.out.println(codeProduit);
+				
+				String sql2 = "SELECT cate.taxe_categorie FROM Categories cate JOIN produit_categorie pc ON pc.id_categorie = cate.id_categorie JOIN Produits p ON p.codeProduit = pc.id_produit WHERE p.codeProduit = ?";
+				PreparedStatement prepared2 =cn.prepareStatement(sql2);
+				prepared2.setInt(1, codeProduit);
+				ResultSet rs2 = prepared2.executeQuery();
+				int taxe_categorie=0;
+				while(rs2.next())
+				{
+					taxe_categorie=rs2.getInt(1);
+				}
+			
+				list_produit.add(new Produit(nomProduit,prixHT,quantite,taxe_categorie));
 			}
 			
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return list_produit;

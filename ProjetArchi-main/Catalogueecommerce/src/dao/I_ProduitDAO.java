@@ -6,7 +6,7 @@ import entite.I_Produit;
 
 public interface I_ProduitDAO 
 {
-	public abstract void createProduit(I_Produit produit);
+	public abstract void createProduit(I_Produit produit,String categorie_name);
 	public abstract void modifyProduit(String nomProduit,I_Produit produit);
 	public abstract void deleteProduit(String nomProduit);
 	public abstract I_Produit getProduit(String nomProduit);
